@@ -1,8 +1,6 @@
 const { z } = require('zod');
 
-const idField = { id: z.coerce.number().int().nonnegative() };
-
-const uniqueItemSchema = z.object(idField);
+const getItemSchema = z.object({id: z.coerce.number().int().nonnegative()});
 
 const getItemsSchema = z.object({
     page: z.coerce.number().int().nonnegative().optional().default(1),
@@ -15,7 +13,6 @@ const createItemSchema = z.object({
 });
 
 const updateItemSchema = z.object({
-    ...idField,
     name: z.string().nonempty().optional(),
     price: z.number().nonnegative().optional(),
 });
@@ -23,7 +20,7 @@ const updateItemSchema = z.object({
 function validate(schema) {
     return function (req, res, next) {
         try {
-            if (schema === uniqueItemSchema) {
+            if (schema === getItemSchema) {
                 req.params = schema.parse(req.params);
             } else {
                 const source = req.method === 'GET' ? req.query : req.body;
@@ -39,7 +36,7 @@ function validate(schema) {
 }
 
 module.exports = {
-    uniqueItemSchema,
+    getItemSchema,
     getItemsSchema,
     createItemSchema,
     updateItemSchema,

@@ -21,8 +21,8 @@ exports.getItems = asyncErrorHandler(async (req, res, next) => {
 });
 
 exports.updateItem = asyncErrorHandler(async (req, res, next) => {
-    const { id } = req.body;
-    const updated = itemStore.update(id, req.body);
+    const { id } = req.params;
+    const updated = itemStore.update(Number(id), req.body);
     if (!updated) return next(new ErrorHandler('Item not found', 404));
     res.status(200).json({ success: true, item: updated });
 });

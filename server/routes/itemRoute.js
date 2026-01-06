@@ -9,7 +9,7 @@ const {
     getItemsSchema,
     createItemSchema,
     updateItemSchema,
-    uniqueItemSchema,
+    getItemSchema,
     validate,
 } = require('../middlewares/user_actions/itemValidation');
 
@@ -22,8 +22,8 @@ router
 
 router
     .route('/items/:id')
-    .get(validate(uniqueItemSchema), getItems)
+    .get(validate(getItemSchema), getItems)
     .put(validate(updateItemSchema), updateItem)
-    .delete(validate(uniqueItemSchema), deleteItem);
+    .delete(validate(getItemSchema), deleteItem);
 
 module.exports = router;
